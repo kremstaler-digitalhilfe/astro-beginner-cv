@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local workshop helpers (not part of the Astro app)
+scripts/setup-github-project.sh
