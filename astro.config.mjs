@@ -4,6 +4,8 @@ import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://kremstaler-digitalhilfe.github.io',
+	base: '/astro-beginner-cv',
 	integrations: [
 		icon({
 			// Only bundle the Lucide icons we use (keeps builds small)
