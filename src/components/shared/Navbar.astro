@@ -1,0 +1,152 @@
+---
+/**
+ * Navbar — the link bar at the top of the CV.
+ *
+ * A prop is data passed into a component, like an argument passed to a function.
+ * index.astro writes <Navbar links={cv.navigationElement} />.
+ * `links` is the prop name. Its value is the `navigationElement` array from cv-raw-data.json.
+ * Each object has a label (the visible text) and an href (the address).
+ *
+ * Pills live in Pill.astro — set a confetti object on a nav link in cv-raw-data.json to enable.
+ *
+ * The --- fences mark the component script. This JavaScript runs once,
+ * when Astro builds the page. The HTML is below.
+ */
+// Import only the type (the shape of the data), not a value that gets rendered.
+// `as Props`: Astro recognizes this name and checks that `links` has the right shape.
+import Pill from './Pill.astro';
+import type { NavbarProps as Props } from '../../types/cv';
+
+// Astro.props = data from the parent page (index.astro → links={cv.navigationElement}).
+// Pill does NOT provide the links — Navbar passes each link down into Pill.
+const { links } = Astro.props;
+---
+
+{/* <nav>: navigation landmark. The class is used by the CSS and the script. aria-label="Main" names it for screen readers. */}
+<nav class="site-navbar" aria-label="Main">
+	{/* <ul>: the list that will hold one <li> per link. */}
+	<ul>
+		{
+			/* The {} run JavaScript. A for loop does not return a value, */
+			/* so it lives inside a function that returns the <li> elements. */
+			(() => {
+				// Empty array. Each loop turn will add one <li>.
+				const listItems = [];
+				// `link` is one object from the array: { label: "About", href: "#about" }, and so on.
+				for (const link of links) {
+					// push adds this element at the end of the listItems array.
+					listItems.push(
+						<li>
+							{/* Child: Pill only displays this link (label, href, confetti). */}
+							<Pill link={link} />
+						</li>
+					);
+				}
+				// Return every <li>. Astro places them inside the <ul>.
+				return listItems;
+			})() // The final () run the function immediately.
+		}
+	</ul>
+</nav>
+
+<script>
+	// This script runs in the browser. It marks the link for the section currently on screen.
+
+	// Find the bar by its class. null if it is missing.
+	const nav = document.querySelector('.site-navbar');
+	// If the bar exists: every link whose address starts with #.
+	// [...] turns the DOM list into a real array. Otherwise: an empty array.
+	const links = nav ? [...nav.querySelectorAll('a[href^="#"]')] : [];
+
+	// id is the name of the visible section, for example "about".
+	const setCurrent = (id: string) => {
+		// One turn per link in the bar.
+		for (const link of links) {
+			// Read the link address, for example "#about".
+			const href = link.getAttribute('href');
+			// Same section: set aria-current="true" (the CSS uses it for the purple style).
+			if (href === `#${id}`) link.setAttribute('aria-current', 'true');
+			// Any other link: remove the mark, so only one link stays active.
+			else link.removeAttribute('aria-current');
+		}
+	};
+
+	// Continue only if the bar exists and has at least one link.
+	if (nav && links.length > 0) {
+		// For each link, find the page section that has the same id.
+		const sections = links
+			.map((link) => {
+				// "#about" without the # becomes "about". ? avoids an error if href is missing.
+				const id = link.getAttribute('href')?.slice(1);
+				// No id: this link does not point at a section.
+				if (!id) return null;
+				// getElementById finds <section id="about"> (or whichever id it is).
+				const section = document.getElementById(id);
+				// Section found: keep its id and the element. Otherwise null.
+				return section ? { id, section } : null;
+			})
+			// Drop the nulls. Only sections that really exist remain.
+			.filter((item) => item !== null);
+
+		// Recalculate the active link. The last section that has reached the bar wins.
+		const update = () => {
+			// Bottom edge of the bar, plus 8 pixels: the line a section must cross.
+			const line = nav.getBoundingClientRect().bottom + 8;
+			// Starting id: the first section. ?? '' if the list is empty.
+			let currentId = sections[0]?.id ?? '';
+			// Sections are visited from top to bottom.
+			for (const item of sections) {
+				// The top of the section is above the line: it has been reached.
+				if (item.section.getBoundingClientRect().top <= line) currentId = item.id;
+			}
+			// If there is an id, mark the link that points at that section.
+			if (currentId) setCurrent(currentId);
+		};
+
+		// On load, so the right link is marked before the first scroll.
+		update();
+		// On every scroll. passive: the browser does not wait for this script to scroll.
+		document.addEventListener('scroll', update, { passive: true });
+		// When the # in the address changes (a link click), recalculate too.
+		window.addEventListener('hashchange', update);
+	}
+</script>
+
+<style>
+	/* Styles for this bar only. The colors come from cv-global-styles.css. */
+	.site-navbar {
+		/* Stays visible at the top of the screen while scrolling. */
+		position: sticky;
+		/* Stuck to the top edge. */
+		top: 0;
+		/* Sits above the CV content when the two overlap. */
+		z-index: 10;
+		/* Cream background. --paper is defined in cv-global-styles.css. */
+		background: var(--paper);
+		/* Purple line under the whole bar. */
+		border-bottom: 2px solid var(--purple);
+		/* Inner space: a little on top and bottom, --space on the sides. */
+		padding: 0.65rem var(--space);
+	}
+
+	.site-navbar ul {
+		/* Links sit side by side, in a row. */
+		display: flex;
+		/* Center pills on the cross axis when they wrap. */
+		align-items: center;
+		/* If they do not fit, they wrap onto the next line. */
+		flex-wrap: wrap;
+		/* The group of links is centered horizontally. */
+		justify-content: center;
+		/* Space between links: 0.4rem vertical, 0.5rem horizontal. */
+		gap: 0.4rem 0.5rem;
+		/* Remove the list bullets. */
+		list-style: none;
+		/* Same maximum width as the CV sheet. */
+		max-width: var(--content-width);
+		/* Centered on the page, with no extra outer margin. */
+		margin: 0 auto;
+		/* Remove the default offset browsers put on a <ul>. */
+		padding: 0;
+	}
+</style>

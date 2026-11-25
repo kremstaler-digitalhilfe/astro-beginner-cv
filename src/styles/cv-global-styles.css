@@ -1,0 +1,111 @@
+/* =============================================================================
+   CV global styles — shared page styles (palette, sheet, base typography)
+   Component-only styles live in each .astro file, in its own style block.
+   ============================================================================= */
+
+/* --- CUSTOMIZE ----------------------------------------------------------------
+   Change colors, fonts, --photo-border, or --card-border to make your CV stand out.
+   Per-card border: pass borderColor="var(--blue)" or borderColor="#5a96d4"
+   -------------------------------------------------------------------------- */
+
+:root {
+	/* Fonts */
+	--font-title: 'Fredoka', sans-serif; /* headings */
+	--font-body: 'Patrick Hand', sans-serif; /* body text */
+	--font-hand: 'Caveat', cursive; /* handwritten accents */
+
+	/* Theme palette — names are easy to read */
+	--paper: #fffdfa; /* sheet background */
+	--grid: #ebe6ee; /* notebook lines */
+	--page: #f3eef2; /* page surround */
+	--ink: #2b2b3a; /* body text */
+	--link: #0b3d91; /* links (AAA) */
+
+	--purple: #9b6fd0; /* main accent (titles, borders) */
+	--purple-soft: #efe6f7; /* soft purple backgrounds */
+	--pink: #e06f90; /* pink accent */
+	--green: #5faf64;
+	--blue: #5a96d4;
+	--orange: #e0923f;
+	--teal: #3aa89e;
+	--yellow: #ffe566; /* highlighter */
+
+	/* Portrait + card border (try --purple, --blue, --pink, …) */
+	--photo-border: var(--purple);
+	--card-border: var(--photo-border); /* same as avatar by default — customize per Card */
+	--card-bg: #ffffff; /* card background */
+
+	/* Layout helpers */
+	--content-width: 40rem;
+	--space: 1.25rem;
+}
+
+/* --- DO NOT EDIT (unless challenge) -----------------------------------------
+   Page shell, notebook background, shared section titles.
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100%;
+	font-family: var(--font-body);
+	font-size: 1.15rem;
+	line-height: 1.5;
+	color: var(--ink);
+	background-color: var(--page);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-title);
+	font-weight: 700;
+	line-height: 1.2;
+	margin: 0 0 0.5rem;
+}
+
+p {
+	margin: 0 0 0.75rem;
+}
+
+a {
+	color: var(--link);
+}
+
+a:hover {
+	text-decoration-thickness: 2px;
+}
+
+/* Main CV sheet — flex column stack; section spacing via gap */
+.cv-sheet {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--space) * 2);
+	max-width: var(--content-width);
+	margin: var(--space) auto;
+	padding: calc(var(--space) * 1.5);
+	/* Notebook paper look */
+	background-color: var(--paper); /* #fffdfa — cream sheet */
+	background-image:
+		linear-gradient(var(--grid) 1px, transparent 1px),
+		/* horizontal lines */
+		linear-gradient(90deg, var(--grid) 1px, transparent 1px); /* vertical lines */
+	background-size: 24px 24px;
+	border: 0.5px solid var(--grid);
+}
+
+.section-title {
+	font-size: 1.4rem; /* h3 */
+	color: var(--ink);
+	margin-bottom: 0;
+}

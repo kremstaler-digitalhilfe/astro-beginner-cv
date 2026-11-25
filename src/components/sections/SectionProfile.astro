@@ -1,0 +1,118 @@
+---
+/**
+ * Profile layout:
+ * 1) Top (centered): name → job title → quote
+ * 2) Row: photo left, contact card right
+ *
+ * Edit person + photo in src/data/cv-raw-data.json.
+ * Replace public/images/me.png (under 150 KB) and write a clear alt.
+ */
+import Card from '../shared/Card.astro';
+import ProfileContact from '../shared/ProfileContact.astro';
+import ProfileQuote from '../shared/ProfileQuote.astro';
+import type { ProfileProps as Props } from '../../types/cv';
+
+const { person, photo } = Astro.props;
+---
+
+<section class="cv-section profile" id="about">
+	<div class="profile-intro">
+		<h1 class="profile-name">{person.firstName} {person.lastName}</h1>
+		<h2 class="profile-title">{person.jobTitle}</h2>
+		<Card fullWidth>
+			<ProfileQuote quote={person.quote} />
+		</Card>
+	</div>
+
+	<div class="profile-row">
+		{/* TODO: compress your photo under 150 KB and set a descriptive alt in cv-raw-data.json */}
+		<img
+			class="profile-photo"
+			src={photo.src}
+			alt={photo.alt}
+			width="160"
+			height="160"
+		/>
+		<Card>
+			<ProfileContact
+				email={person.email}
+				phone={person.phone}
+				address={person.address}
+			/>
+		</Card>
+	</div>
+</section>
+
+<style>
+	.profile {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	/* Top: name, job title, quote — centered */
+	.profile-intro {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.profile-name {
+		font-size: 2rem;
+		margin-bottom: 0;
+	}
+
+	.profile-title {
+		font-family: var(--font-hand);
+		font-size: 1.85rem;
+		font-weight: 600;
+		color: var(--purple);
+		margin: 0;
+	}
+
+	/* :global — Card is a child component (layout sizing only; Card owns its flex) */
+	.profile-intro :global(.card) {
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Row: photo left, contact card right */
+	.profile-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4.5rem;
+		width: 100%;
+	}
+
+	/* Card grows to fill the row beside the photo */
+	.profile-row :global(.card) {
+		flex: 1 1 12rem;
+	}
+
+	/* Keep photo under 150 KB (e.g. TinyPNG) and write a real alt in cv-raw-data.json */
+	.profile-photo {
+		width: 10rem;
+		height: 10rem;
+		object-fit: cover;
+		border-radius: 50%;
+		border: 2px solid var(--photo-border);
+		flex-shrink: 0;
+		background: var(--purple-soft);
+	}
+
+	/* Phone: photo and contact stacked, both centered */
+	@media (max-width: 40rem) {
+		.profile-row {
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.profile-row :global(.card) {
+			width: 100%;
+		}
+	}
+</style>

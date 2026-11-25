@@ -1,0 +1,29 @@
+---
+/**
+ * Profile quote — short line in quotation marks
+ * Value comes from cv-raw-data.json → person.quote.
+ */
+import type { ProfileQuoteProps as Props } from '../../types/cv';
+
+const { quote } = Astro.props;
+---
+
+<div class="profile-quote">
+	<p>“{quote}”</p>
+</div>
+
+<style>
+	.profile-quote {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.profile-quote p {
+		margin: 0;
+		font-family: var(--font-hand);
+		font-size: 1.25rem;
+		line-height: 1.4;
+		text-align: center;
+	}
+</style>

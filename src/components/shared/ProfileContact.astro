@@ -1,0 +1,65 @@
+---
+/**
+ * Profile contact — email, phone, address with Lucide icons
+ * Values come from cv-raw-data.json → person.
+ */
+import { Icon } from 'astro-icon/components';
+import type { ProfileContactProps as Props } from '../../types/cv';
+
+const { email, phone, address } = Astro.props;
+
+/* tel: links work best without spaces */
+const phoneHref = `tel:${phone.replace(/\s+/g, '')}`;
+---
+
+<div class="profile-contact">
+	<p class="profile-email">
+		<span class="contact-icon" aria-hidden="true">
+			<Icon name="lucide:mail" size={18} />
+		</span>
+		<a href={`mailto:${email}`}>{email}</a>
+	</p>
+	<p class="profile-phone">
+		<span class="contact-icon" aria-hidden="true">
+			<Icon name="lucide:phone" size={18} />
+		</span>
+		<a href={phoneHref}>{phone}</a>
+	</p>
+	<p class="profile-address">
+		<span class="contact-icon" aria-hidden="true">
+			<Icon name="lucide:map-pin" size={18} />
+		</span>
+		<span>{address}</span>
+	</p>
+</div>
+
+<style>
+	/* One flex column = one block (parent card centers this whole unit) */
+	.profile-contact {
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+	}
+
+	.profile-contact p {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		margin: 0;
+		font-size: 1rem;
+	}
+
+	.contact-icon {
+		display: inline-flex;
+		flex-shrink: 0;
+		color: var(--purple);
+	}
+
+	.contact-icon :global([data-icon]) {
+		display: block;
+	}
+
+	.profile-address {
+		color: var(--ink);
+	}
+</style>

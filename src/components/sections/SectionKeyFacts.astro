@@ -1,0 +1,38 @@
+---
+/**
+ * SectionKeyFacts — "Key facts" section: flex wrapper for
+ * Skills, Soft Skills, Languages, General Information cards.
+ */
+---
+
+<section class="key-facts" id="key-facts">
+	<h3 class="section-title">Key facts</h3>
+	<div class="info-cards">
+		<slot />
+	</div>
+</section>
+
+<style>
+	/* Section stack: title + card row */
+	.key-facts {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space);
+		width: 100%;
+	}
+
+	/* Row of cards: wrap on narrow screens */
+	.info-cards {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		gap: var(--space);
+		width: 100%;
+	}
+
+	/* Each card host shares the row evenly */
+	.info-cards > :global(*) {
+		flex: 1 1 14rem;
+		min-width: 0;
+	}
+</style>

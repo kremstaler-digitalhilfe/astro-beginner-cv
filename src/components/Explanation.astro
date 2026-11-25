@@ -1,0 +1,387 @@
+---
+/**
+ * Explanation — a beginner guide to an Astro component (.astro file).
+ * It shows the four zones of one file and what goes where:
+ * JavaScript (build), HTML, CSS (only this file), JavaScript (browser).
+ * German first, English second.
+ */
+type Zone = {
+	id: string;
+	tag: string;
+	kind: 'js-build' | 'html' | 'css' | 'js-browser';
+	labelDe: string;
+	labelEn: string;
+	whatDe: string;
+	whatEn: string;
+	code: string;
+	noteDe?: string;
+	noteEn?: string;
+};
+
+const zones: Zone[] = [
+	{
+		id: 'zone-build',
+		tag: '--- … ---',
+		kind: 'js-build',
+		labelDe: 'Oben: JavaScript',
+		labelEn: 'Top: JavaScript',
+		whatDe: 'Ganz oben, zwischen den drei Strichen, kommt JavaScript hin. Es läuft, wenn Astro die Seite baut — nicht im Browser. Hier holst du andere Bausteine (import), nimmst Daten an (props) und machst Variablen.',
+		whatEn: 'At the very top, between the three dashes, goes JavaScript. It runs when Astro builds the page — not in the browser. Here you bring in other building blocks (import), take in data (props), and make variables.',
+		code: `---
+import Card from './Card.astro';
+const name = 'Anna';
+---`,
+		noteDe: 'Leer lassen ist okay. Wenn du keine Daten und keine Importe brauchst, lässt du nur --- und --- stehen oder weg.',
+		noteEn: 'Empty is fine. If you need no data and no imports, you can leave just --- and --- or none at all.',
+	},
+	{
+		id: 'zone-html',
+		tag: '<h1> <p> …',
+		kind: 'html',
+		labelDe: 'Mitte: HTML',
+		labelEn: 'Middle: HTML',
+		whatDe: 'In der Mitte kommt dein HTML hin: die sichtbare Struktur. Überschriften, Text, Bilder, Links. Mit geschweiften Klammern { } setzt du einen Wert aus dem oberen Teil ein.',
+		whatEn: 'In the middle goes your HTML: the visible structure. Headings, text, images, links. With curly braces { } you drop in a value from the top part.',
+		code: `<h1>Hallo {name}</h1>
+<p>Willkommen auf meiner Seite.</p>`,
+		noteDe: 'Das ist normales HTML. Das einzige Neue: { } holt einen Wert von oben.',
+		noteEn: 'This is normal HTML. The only new thing: { } pulls in a value from the top.',
+	},
+	{
+		id: 'zone-css',
+		tag: '<style> … </style>',
+		kind: 'css',
+		labelDe: 'Unten: CSS',
+		labelEn: 'Bottom: CSS',
+		whatDe: 'Dein CSS kommt in einen <style>-Block. Es gilt nur für dieses eine Bauteil, nicht für die ganze Seite. Du kannst nichts an einer anderen Stelle kaputt machen.',
+		whatEn: 'Your CSS goes in a <style> block. It applies only to this one component, not to the whole page. You cannot break anything somewhere else.',
+		code: `<style>
+  h1 { color: purple; }
+  p { font-size: 1.1rem; }
+</style>`,
+		noteDe: 'Nur für dieses Bauteil. Soll eine Farbe oder Schrift auf der GANZEN Seite gelten, kommt sie nicht hierher, sondern in die gemeinsame Datei cv-global-styles.css.',
+		noteEn: 'Only for this component. If a color or font should apply to the WHOLE page, it does not go here but into the shared file cv-global-styles.css.',
+	},
+	{
+		id: 'zone-browser',
+		tag: '<script> … </script>',
+		kind: 'js-browser',
+		labelDe: 'Unten: JavaScript',
+		labelEn: 'Bottom: JavaScript',
+		whatDe: 'JavaScript, das im Browser laufen soll, kommt in einen <script>-Block — zum Beispiel auf einen Klick reagieren. Viele Bauteile brauchen gar keins.',
+		whatEn: 'JavaScript that should run in the browser goes in a <script> block — for example reacting to a click. Many components need none at all.',
+		code: `<script>
+  const btn = document.querySelector('button');
+  btn.addEventListener('click', () => alert('Hi'));
+</script>`,
+		noteDe: 'Das ist normales JavaScript. Soll Code auf der ganzen Seite laufen, kommt er in eine gemeinsame Datei wie scripts/cv-global-actions.js.',
+		noteEn: 'This is normal JavaScript. If code should run across the whole site, it goes in a shared file like scripts/cv-global-actions.js.',
+	},
+];
+
+const kindLabel: Record<Zone['kind'], string> = {
+	'js-build': 'JavaScript',
+	html: 'HTML',
+	css: 'CSS',
+	'js-browser': 'JavaScript',
+};
+---
+
+<article class="explain">
+	<p class="explain-back">
+		<a href="/">← <span lang="de">Zurück zum CV</span> · <span lang="en">Back to the CV</span></a>
+	</p>
+
+	<header class="explain-intro">
+		<h1><span lang="de">Ein Astro-Bauteil</span> <span lang="en">An Astro component</span></h1>
+		<p lang="de">
+			Eine <code>.astro</code>-Datei ist ein Bauteil. Sie hat feste Plätze: einen für JavaScript, einen für HTML, einen für CSS. Hier siehst du, was wohin kommt.
+		</p>
+		<p lang="en">
+			An <code>.astro</code> file is one component. It has fixed places: one for JavaScript, one for HTML, one for CSS. Here you see what goes where.
+		</p>
+	</header>
+
+	<!-- Illustrated file: the four zones stacked, top to bottom -->
+	<figure class="filemap" aria-label="Astro file zones">
+		{
+			zones.map((zone) => (
+				<a class:list={['filemap-zone', `is-${zone.kind}`]} href={`#${zone.id}`}>
+					<span class="filemap-code">{zone.tag}</span>
+					<span class="filemap-label">
+						<span lang="de">{zone.labelDe}</span>
+						<span lang="en">{zone.labelEn}</span>
+					</span>
+				</a>
+			))
+		}
+	</figure>
+
+	<p class="filemap-hint">
+		<span lang="de">Tippe auf eine Zeile, um dorthin zu springen. Reihenfolge von oben nach unten.</span>
+		<span lang="en">Tap a row to jump there. Order is top to bottom.</span>
+	</p>
+
+	{
+		zones.map((zone, index) => (
+			<section id={zone.id} class:list={['zone', `zone--${zone.kind}`]}>
+				<h2>
+					<span class="zone-step">{index + 1}</span>
+					<span class="zone-heads">
+						<span lang="de">{zone.labelDe}</span>
+						<span lang="en">{zone.labelEn}</span>
+					</span>
+					<span class="zone-kind">{kindLabel[zone.kind]}</span>
+				</h2>
+
+				<p class="zone-what" lang="de">{zone.whatDe}</p>
+				<p class="zone-what" lang="en">{zone.whatEn}</p>
+
+				<pre><code>{zone.code}</code></pre>
+
+				{zone.noteDe && (
+					<div class="zone-note">
+						<p lang="de">{zone.noteDe}</p>
+						<p lang="en">{zone.noteEn}</p>
+					</div>
+				)}
+			</section>
+		))
+	}
+
+	<section class="zone zone--order">
+		<h2>
+			<span class="zone-heads">
+				<span lang="de">Die Reihenfolge</span>
+				<span lang="en">The order</span>
+			</span>
+		</h2>
+		<p lang="de">In der Datei stehen die Teile immer so: zuerst JavaScript zwischen <code>---</code>, dann das HTML, dann <code>&lt;style&gt;</code> und <code>&lt;script&gt;</code>.</p>
+		<p lang="en">In the file the parts always come like this: first JavaScript between <code>---</code>, then the HTML, then <code>&lt;style&gt;</code> and <code>&lt;script&gt;</code>.</p>
+		<pre><code>{`---
+// JavaScript (beim Bauen / at build)
+---
+
+<!-- HTML -->
+
+<style>  /* CSS, nur diese Datei / this file only */ </style>
+<script> // JavaScript (im Browser / in the browser) </script>`}</code></pre>
+	</section>
+</article>
+
+<style>
+	.explain {
+		max-width: 44rem;
+		margin: var(--space) auto;
+		padding: calc(var(--space) * 1.5);
+		background: var(--paper);
+		border: 0.5px solid var(--grid);
+	}
+
+	.explain-back {
+		margin-bottom: var(--space);
+	}
+
+	.explain-intro h1 {
+		font-size: 2rem;
+	}
+
+	.explain-intro h1 span[lang='en'] {
+		display: block;
+		font-size: 1.1rem;
+		font-weight: 500;
+		color: var(--purple);
+	}
+
+	.explain code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 0.85em;
+	}
+
+	/* --- Illustrated file map --- */
+	.filemap {
+		margin: 0 0 0.5rem;
+		padding: 0.5rem;
+		background: #fff;
+		border: 2px solid var(--grid);
+		border-radius: 0.75rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.filemap-zone {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.3rem 0.75rem;
+		padding: 0.7rem 0.9rem;
+		border-radius: 0.5rem;
+		border-left: 6px solid var(--zone-color);
+		background: var(--zone-soft);
+		text-decoration: none;
+		color: var(--ink);
+	}
+
+	.filemap-zone:hover {
+		outline: 2px solid var(--zone-color);
+	}
+
+	.filemap-code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 0.9rem;
+		font-weight: 600;
+	}
+
+	.filemap-label {
+		font-family: var(--font-title);
+		font-size: 0.95rem;
+		line-height: 1.2;
+		text-align: right;
+	}
+
+	.filemap-label span[lang='en'] {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: var(--zone-color);
+	}
+
+	.filemap-hint {
+		font-family: var(--font-hand);
+		font-size: 1.2rem;
+		color: var(--purple);
+		margin-bottom: calc(var(--space) * 1.5);
+	}
+
+	.filemap-hint span {
+		display: block;
+	}
+
+	/* --- Zone colors (shared by map + sections) --- */
+	.is-js-build,
+	.zone--js-build {
+		--zone-color: var(--purple);
+		--zone-soft: var(--purple-soft);
+	}
+
+	.is-html,
+	.zone--html {
+		--zone-color: var(--blue);
+		--zone-soft: #e3eef9;
+	}
+
+	.is-css,
+	.zone--css {
+		--zone-color: var(--orange);
+		--zone-soft: #fde8c8;
+	}
+
+	.is-js-browser,
+	.zone--js-browser {
+		--zone-color: var(--green);
+		--zone-soft: #e3f3e4;
+	}
+
+	/* --- Zone sections --- */
+	.zone {
+		margin: 0 0 calc(var(--space) * 1.5);
+		padding: 0 0 0 1rem;
+		border-left: 6px solid var(--zone-color, var(--grid));
+	}
+
+	.zone h2 {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.5rem 0.65rem;
+	}
+
+	.zone-step {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.8rem;
+		height: 1.8rem;
+		border-radius: 50%;
+		background: var(--zone-color);
+		color: #fff;
+		font-size: 1rem;
+	}
+
+	.zone-heads span {
+		display: block;
+		line-height: 1.15;
+	}
+
+	.zone-heads span[lang='en'] {
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--purple);
+	}
+
+	.zone-kind {
+		margin-left: auto;
+		font-family: var(--font-title);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--ink);
+		background: var(--zone-soft);
+		border-radius: 999px;
+		padding: 0.15rem 0.6rem;
+	}
+
+	.zone-what {
+		margin-bottom: 0.5rem;
+	}
+
+	.zone-what[lang='en'] {
+		color: #555;
+	}
+
+	.explain pre {
+		margin: 0.5rem 0 0.75rem;
+		padding: 0.75rem 1rem;
+		background: #fff;
+		border: 2px solid var(--zone-soft, var(--purple-soft));
+		border-radius: 0.75rem;
+		overflow-x: auto;
+	}
+
+	.explain pre code {
+		font-size: 0.82rem;
+		line-height: 1.5;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	.zone-note {
+		background: var(--yellow);
+		border-radius: 0.75rem;
+		padding: 0.65rem 0.85rem;
+	}
+
+	.zone-note p {
+		margin-bottom: 0.4rem;
+	}
+
+	.zone-note p:last-child {
+		margin-bottom: 0;
+		font-size: 0.95rem;
+		color: #555;
+	}
+
+	.zone--order {
+		border-left-color: var(--grid);
+	}
+
+	@media (max-width: 40rem) {
+		.explain {
+			margin: 0;
+			padding: 1rem;
+		}
+	}
+</style>

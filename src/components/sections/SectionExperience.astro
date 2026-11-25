@@ -1,0 +1,71 @@
+---
+/**
+ * Professional Experience — list from cv-raw-data.json
+ * Replace the demo jobs with your real experience.
+ *
+ * Layout: section stack → list stack → each item stack (flex + gap).
+ */
+import type { ExperienceProps as Props } from '../../types/cv';
+
+const { items } = Astro.props;
+---
+
+<section class="cv-section experience" id="professional-experience">
+	<h3 class="section-title">Professional Experience</h3>
+	<ul class="experience-list">
+		{
+			items.map((job) => (
+				<li class="experience-item">
+					<h4 class="experience-role">
+						{job.role} · {job.company}
+					</h4>
+					<p class="experience-meta">
+						{job.start} – {job.end}
+					</p>
+					<p>{job.description}</p>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	/* Section stack: title + list */
+	.experience {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space);
+	}
+
+	.experience-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space);
+	}
+
+	/* Item stack: role, dates, description */
+	.experience-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+
+	.experience-role {
+		font-size: 1.15rem; /* h4 — a bit smaller than h3 section titles */
+		margin: 0;
+	}
+
+	.experience-meta {
+		font-family: var(--font-hand);
+		font-size: 1.1rem;
+		color: var(--purple);
+		margin: 0;
+	}
+
+	.experience-item p {
+		margin: 0;
+	}
+</style>

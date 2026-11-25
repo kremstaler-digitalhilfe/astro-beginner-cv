@@ -1,0 +1,34 @@
+---
+/**
+ * Card — white box with the same border style as the avatar by default.
+ *
+ * Customize the border with the borderColor prop, e.g.:
+ *   <Card borderColor="var(--blue)">...</Card>
+ * or any hex color: borderColor="#5a96d4"
+ */
+import type { CardProps as Props } from '../../types/cv';
+
+const { borderColor, fullWidth = false } = Astro.props;
+
+const style = borderColor ? `--card-border: ${borderColor};` : undefined;
+---
+
+<div class:list={['card', { 'card--full': fullWidth }]} style={style}>
+	<slot />
+</div>
+
+<style>
+	/* Card look — border matches avatar (--card-border) by default */
+	.card {
+		display: flex;
+		justify-content: center;
+		background: var(--card-bg);
+		border: 2px solid var(--card-border);
+		border-radius: 0.75rem;
+		padding: 0.85rem 1rem;
+	}
+
+	.card--full {
+		width: 100%;
+	}
+</style>

@@ -1,0 +1,51 @@
+---
+/**
+ * Soft skills — simple list from cv-raw-data.json
+ * Put your real soft skills in the softSkills array.
+ *
+ * Layout: Card → stack (h4 title + list). Lives under Key facts.
+ */
+import Card from './Card.astro';
+import type { SoftSkillsProps as Props } from '../../types/cv';
+
+const { items } = Astro.props;
+---
+
+<div class="soft-skills" id="soft-skills">
+	<Card>
+		<div class="skills-body">
+			<h4 class="card-title">Soft Skills</h4>
+			<ul class="skills-list">
+				{items.map((skill) => <li>{skill}</li>)}
+			</ul>
+		</div>
+	</Card>
+</div>
+
+<style>
+	.soft-skills :global(.card) {
+		width: 100%;
+		height: 100%;
+	}
+
+	/* Stack: title + list */
+	.skills-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space);
+		width: 100%;
+	}
+
+	.card-title {
+		font-size: 1.15rem;
+		margin: 0;
+	}
+
+	.skills-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		margin: 0;
+		padding-left: 1.25rem;
+	}
+</style>

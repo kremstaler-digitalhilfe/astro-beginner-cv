@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "pageTitle": "User Musterfrau — CV"
+  },
+  "person": {
+    "firstName": "Lorem ipsum",
+    "lastName": "Musterfrau",
+    "jobTitle": "Junior Web Developer",
+    "quote": "I build simple, clear websites and want to grow as a frontend developer.",
+    "email": "user.musterfrau@email.com",
+    "phone": "+43 664 1234567",
+    "address": "Lorem ipsum 12, 8010 Graz"
+  },
+  "photo": {
+    "src": "/images/me.png",
+    "alt": "Stylized avatar of User Musterfrau, a woman with curly brown hair and round black glasses"
+  },
+  "navigationElement": [
+    {
+      "label": "About",
+      "href": "#about",
+      "confetti": { "emojis": ["✨"], "emojiSize": 15, "confettiNumber": 800 }
+    },
+    {
+      "label": "Professional Experience",
+      "href": "#professional-experience",
+      "confetti": {
+        "confettiColors": ["#ff0a54", "#ff477e", "#ff7096", "#ff85a1", "#fbb1bd"],
+        "confettiRadius": 6,
+        "confettiNumber": 120
+      }
+    },
+    {
+      "label": "Education",
+      "href": "#education",
+      "confetti": { "emojis": ["📚", "🎓"], "emojiSize": 40, "confettiNumber": 40 }
+    },
+    {
+      "label": "Key facts",
+      "href": "#key-facts",
+      "confetti": { "emojis": ["💡", "⚡️", "🗝️"], "confettiNumber": 60 }
+    }
+  ],
+  "experience": [
+    {
+      "role": "Intern Web Developer",
+      "company": "Beispiel GmbH",
+      "start": "2024-03",
+      "end": "2024-08",
+      "description": "Built landing pages with HTML and CSS, and fixed small UI bugs."
+    },
+    {
+      "role": "Retail Associate",
+      "company": "Shop AG",
+      "start": "2022-01",
+      "end": "2024-02",
+      "description": "Customer service and day-to-day team coordination."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Web Development Course",
+      "school": "Digitalhilfe Academy",
+      "start": "2025-01",
+      "end": "2025-06",
+      "description": "HTML, CSS, JavaScript, and building a personal CV site."
+    }
+  ],
+  "skills": ["HTML", "CSS", "JavaScript", "Lorem ipsum"],
+  "softSkills": ["Teamwork", "Communication", "Problem solving", "Lorem ipsum"],
+  "languages": [
+    { "name": "German", "level": "Native" },
+    { "name": "English", "level": "B2" }
+  ],
+  "generalInformation": [
+    { "label": "Nationality", "value": "Lorem ipsum" },
+    { "label": "Birthdate", "value": "1995-06-15" },
+    { "label": "Driving license", "value": "Class B" },
+    { "label": "Status", "value": "Lorem ipsum" }
+  ],
+  "cvDownload": {
+    "heading": "Download my CV",
+    "buttonLabel": "Open PDF",
+    "file": "/cv-pdf/cv.pdf"
+  },
+  "footer": {
+    "backToTop": {
+      "label": "To the top",
+      "href": "#top"
+    }
+  }
+}

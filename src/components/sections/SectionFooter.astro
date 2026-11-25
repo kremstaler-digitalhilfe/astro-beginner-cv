@@ -1,0 +1,25 @@
+---
+/**
+ * Footer section — back-to-top pill (below CV download).
+ *
+ * Uses Pill with a nav link from cv-raw-data.json → footer.backToTop.
+ * href="#top" scrolls to the top of the page (id on <body> in Layout).
+ */
+import Pill from '../shared/Pill.astro';
+import type { FooterProps as Props } from '../../types/cv';
+
+const { backToTop } = Astro.props;
+---
+
+<footer class="cv-section cv-footer" id="footer">
+	<Pill link={backToTop} />
+</footer>
+
+<style>
+	.cv-footer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding-top: var(--space);
+	}
+</style>

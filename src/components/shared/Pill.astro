@@ -1,0 +1,88 @@
+---
+/**
+ * Pill — rounded link used in the navbar (and reusable elsewhere).
+ *
+ * Pass a nav link; label and href come from it.
+ * Optional link.confetti is passed to fireConfetti() on click.
+ * No confetti prop → no confetti.
+ *
+ * fireConfetti is global (scripts/cv-global-actions.js) — no import needed.
+ *
+ * Bonus — add confetti on a link in src/data/cv-raw-data.json (JSON has no comments,
+ * so the example lives here). Copy into a navigationElement entry:
+ *
+ * {
+ *   "label": "About",
+ *   "href": "#about",
+ *   "confetti": { "emojis": ["🎉", "✨", "💥"], "confettiNumber": 80 }
+ * }
+ *
+ * Other options: confettiColors, confettiRadius, emojiSize — see README.
+ */
+import type { PillProps as Props } from '../../types/cv';
+
+const { link } = Astro.props;
+const { label, href, confetti } = link;
+
+const fireConfetti = confetti
+	? `fireConfetti(${JSON.stringify(confetti)})`
+	: undefined;
+---
+
+<a class="pill" href={href} onclick={fireConfetti}>
+	{label}
+</a>
+
+<style>
+	.pill {
+		/* Center the label inside the pill (horizontal + vertical). */
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		/* Title font, defined in the global styles. */
+		font-family: var(--font-title);
+		/* A bit heavier than normal text. */
+		font-weight: 500;
+		/* Size of the link text. */
+		font-size: 1rem;
+		/* Tight line height, so the pill stays compact. */
+		line-height: 1;
+		/* No underline. */
+		text-decoration: none;
+		/* Blue link color. */
+		color: var(--link);
+		/* Very light purple background, like a pill. */
+		background: var(--purple-soft);
+		/* 999px makes the corners fully round. */
+		border-radius: 999px;
+		/* Space between the text and the edge of the pill. */
+		padding: 0.35rem 0.75rem;
+		/* The link text stays on one line. */
+		white-space: nowrap;
+	}
+
+	.pill:hover {
+		/* On hover: highlighter-yellow background. */
+		background: var(--yellow);
+		/* Dark ink text, readable on the yellow. */
+		color: var(--ink);
+	}
+
+	/* Link of the section on screen: stays purple, including on hover. */
+	.pill[aria-current='true'],
+	.pill[aria-current='true']:hover {
+		/* Purple text. */
+		color: var(--purple);
+		/* Light purple background, instead of the hover yellow. */
+		background: var(--purple-soft);
+		/* Inner purple outline, without changing the pill size. */
+		box-shadow: inset 0 0 0 2px var(--purple);
+	}
+
+	.pill:focus-visible {
+		/* Outline shown for keyboard focus (Tab), not for a mouse click. */
+		outline: 2px solid var(--purple);
+		/* A small gap between the pill and that outline. */
+		outline-offset: 2px;
+	}
+</style>

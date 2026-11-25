@@ -1,11 +1,36 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navbar from '../components/shared/Navbar.astro';
+import SectionProfile from '../components/sections/SectionProfile.astro';
+import SectionExperience from '../components/sections/SectionExperience.astro';
+import SectionEducation from '../components/sections/SectionEducation.astro';
+import Skills from '../components/shared/Skills.astro';
+import SoftSkills from '../components/shared/SoftSkills.astro';
+import Languages from '../components/shared/Languages.astro';
+import GeneralInformation from '../components/shared/GeneralInformation.astro';
+import SectionKeyFacts from '../components/sections/SectionKeyFacts.astro';
+import SectionCvDownload from '../components/sections/SectionCvDownload.astro';
+import SectionFooter from '../components/sections/SectionFooter.astro';
+import cv from '../data/cv-raw-data.json';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={cv.meta.pageTitle}>
+	<Navbar links={cv.navigationElement} />
+	<main class="cv-sheet">
+		<SectionProfile person={cv.person} photo={cv.photo} />
+		<SectionExperience items={cv.experience} />
+		<SectionEducation items={cv.education} />
+		<SectionKeyFacts>
+			<Skills items={cv.skills} />
+			<SoftSkills items={cv.softSkills} />
+			<Languages items={cv.languages} />
+			<GeneralInformation items={cv.generalInformation} />
+		</SectionKeyFacts>
+		<SectionCvDownload
+			heading={cv.cvDownload.heading}
+			buttonLabel={cv.cvDownload.buttonLabel}
+			file={cv.cvDownload.file}
+		/>
+		<SectionFooter backToTop={cv.footer.backToTop} />
+	</main>
 </Layout>

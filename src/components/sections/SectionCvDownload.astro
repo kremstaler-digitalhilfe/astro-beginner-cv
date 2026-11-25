@@ -1,0 +1,31 @@
+---
+/**
+ * CV Download section
+ *
+ * The nav link "#cv-download" scrolls here (id is required).
+ * The button lives in shared/DownloadButton.astro — build it there.
+ *
+ * Layout: section stack (title + button).
+ */
+import DownloadButton from '../shared/DownloadButton.astro';
+import type { CvDownloadProps as Props } from '../../types/cv';
+
+const { heading, buttonLabel, file } = Astro.props;
+---
+
+<section class="cv-section cv-download" id="cv-download">
+	<h3 class="section-title">{heading}</h3>
+	<DownloadButton buttonLabel={buttonLabel} file={file} />
+</section>
+
+<style>
+	/* Section stack: title + content, centered */
+	.cv-download {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: var(--space);
+		padding-top: var(--space);
+	}
+</style>
